@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Staj Portalı Giriş</title>
+    <style>
+        .hidden { display: none; }
+        #dashboard { margin-top: 20px; border: 1px solid #ccc; padding: 20px; }
+        .menu-item { margin-right: 10px; cursor: pointer; color: blue; }
+        footer { margin-top: 50px; font-size: 0.8em; color: gray; }
+        #message { font-weight: bold; color: red; margin-top: 10px; }
+    </style>
+</head>
+<body>
+    <!-- Mesaj alanını dışarı taşıdık, böylece login-section gizlense bile mesaj görünür kalır -->
+    <p id="message"></p>
+
+    <div id="login-section">
+        <h1>Giriş Yap</h1>
+        <form id="loginForm">
+            <label for="email">Email:</label>
+            <input type="text" id="email" name="email"><br><br>
+            <label for="password">Şifre:</label>
+            <input type="password" id="password" name="password"><br><br>
+            <button type="button" id="loginButton" onclick="login()">Giriş</button>
+        </form>
+    </div>
+
+    <div id="dashboard" class="hidden">
+        <h2>Hoşgeldiniz, Admin</h2>
+        <nav>
+            <span id="menu-ilanlar" class="menu-item">İlanlar</span>
+            <span id="menu-basvurular" class="menu-item">Başvurularım</span>
+            <span id="menu-profil" class="menu-item">Profil</span>
+            <button id="logoutButton" onclick="logout()">Çıkış Yap</button>
+        </nav>
+        <hr>
+        <div id="content-area">
+            <p>Aktif İlanlar Listeleniyor...</p>
+            <ul id="ilan-listesi">
+                <li>Java Developer Stajyeri</li>
+                <li>Frontend React Stajyeri</li>
+            </ul>
+            <button id="ilanEkleButton" onclick="ilanEkleFormuGoster()">Yeni İlan Ekle</button>
+        </div>
+        <div id="ilan-ekle-form" class="hidden">
+            <h3>İlan Ekle</h3>
+            <input type="text" id="ilan-baslik" placeholder="İlan Başlığı">
+            <button id="kaydetButton">Kaydet</button>
+        </div>
+    </div>
+
+    <footer id="site-footer">
+        &copy; 2024 Öğrenci Staj Portalı - Tüm Hakları Saklıdır.
+    </footer>
+
+    <script>
+        function login() {
+            const email = document.getElementById("email").value;
+            if(email === "admin@test.com") {
+                document.getElementById("message").innerText = "Giriş Başarılı!";
+                document.getElementById("message").style.color = "green"; // Başarılıysa yeşil olsun
+                document.getElementById("login-section").classList.add("hidden");
+                document.getElementById("dashboard").classList.remove("hidden");
+            } else {
+                document.getElementById("message").innerText = "Hatalı Giriş!";
+                document.getElementById("message").style.color = "red";
+            }
+        }
+
+        function logout() {
+            document.getElementById("dashboard").classList.add("hidden");
+            document.getElementById("login-section").classList.remove("hidden");
+            document.getElementById("email").value = "";
+            document.getElementById("password").value = "";
+            document.getElementById("message").innerText = "";
+        }
+
+        function ilanEkleFormuGoster() {
+            document.getElementById("ilan-ekle-form").classList.remove("hidden");
+        }
+    </script>
+</body>
+</html>
