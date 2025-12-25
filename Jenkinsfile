@@ -3,7 +3,7 @@ pipeline {
 
     tools {
         // Jenkins Global Tool Configuration'da tanımlı adlar olmalı
-        maven 'Maven 3'
+        maven 'Maven 3.9.6'
         jdk 'JDK 21'
     }
 
