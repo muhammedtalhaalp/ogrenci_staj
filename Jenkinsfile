@@ -10,7 +10,8 @@ pipeline {
         stage('1. Checkout') {
             steps {
                 echo 'Github\'dan kodlar çekiliyor...'
-                checkout scm
+                // checkout scm yerine doğrudan git komutu kullanıyoruz
+                git branch: 'main', url: 'https://github.com/muhammedtalhaalp/ogrenci_staj.git'
             }
         }
 
@@ -53,7 +54,6 @@ pipeline {
                 bat 'docker run -d -p 8081:8080 --name staj-app-container ogrenci-staj-app'
 
                 echo 'Uygulamanın ayağa kalkması için 20 saniye bekleniyor...'
-                // Windows'ta timeout yerine ping ile bekleme
                 bat 'ping -n 21 127.0.0.1 > nul'
             }
         }
@@ -90,7 +90,14 @@ pipeline {
     post {
         always {
             echo 'Pipeline tamamlandı. Temizlik yapılıyor...'
-            bat 'docker rm -f staj-app-container || exit 0'
+            // Hata durumunda bile container'ı temizlemeye çalış
+            script {
+                try {
+                    bat 'docker rm -f staj-app-container || exit 0'
+                } catch (Exception e) {
+                    echo 'Temizlik sırasında hata oluştu veya container zaten yok: ' + e.getMessage()
+                }
+            }
         }
     }
 }
