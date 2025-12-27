@@ -17,7 +17,6 @@ pipeline {
         stage('2. Build') {
             steps {
                 echo 'Kodlar build ediliyor (Testler atlanarak)...'
-                // Windows için 'bat' komutu kullanılır
                 bat 'mvn clean package -DskipTests'
             }
         }
@@ -49,18 +48,13 @@ pipeline {
         stage('5. Dockerize') {
             steps {
                 echo 'Sistem docker container üzerinde çalıştırılıyor...'
-                // Önce varsa eski container'ı durdur ve sil (Hata vermemesi için || exit 0)
                 bat 'docker rm -f staj-app-container || exit 0'
-
-                // Yeni Docker imajını oluştur
                 bat 'docker build -t ogrenci-staj-app .'
-
-                // Yeni container'ı başlat
                 bat 'docker run -d -p 8081:8080 --name staj-app-container ogrenci-staj-app'
 
                 echo 'Uygulamanın ayağa kalkması için 20 saniye bekleniyor...'
-                // Windows'ta bekleme komutu 'timeout'
-                bat 'timeout /t 20'
+                // Windows'ta timeout yerine ping ile bekleme
+                bat 'ping -n 21 127.0.0.1 > nul'
             }
         }
 
@@ -96,7 +90,6 @@ pipeline {
     post {
         always {
             echo 'Pipeline tamamlandı. Temizlik yapılıyor...'
-            // Çalışma bittikten sonra container'ı her zaman kaldır
             bat 'docker rm -f staj-app-container || exit 0'
         }
     }
