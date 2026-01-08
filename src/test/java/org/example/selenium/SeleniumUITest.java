@@ -32,7 +32,7 @@ public class SeleniumUITest {
         // System.setProperty("webdriver.chrome.driver", "C:/path/to/chromedriver.exe");
 
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        //options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
