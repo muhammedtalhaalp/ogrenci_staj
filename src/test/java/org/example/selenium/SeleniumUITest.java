@@ -49,6 +49,7 @@ public class SeleniumUITest {
         if (driver != null) {
             driver.quit();
         }
+
     }
 
     private void loginAsAdmin() {
