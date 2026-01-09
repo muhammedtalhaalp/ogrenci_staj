@@ -72,6 +72,8 @@ public class SeleniumUITest {
 
     @Test
     public void testSuccessfulLogin() {
+
+
         driver.get("http://localhost:" + port + "/index.html");
 
         WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("email")));
