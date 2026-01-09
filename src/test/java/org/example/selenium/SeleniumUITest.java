@@ -1,5 +1,6 @@
 package org.example.selenium;
 
+import org.example.Main;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -18,7 +19,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// classes = Main.class ekleyerek Spring Boot'a ana sınıfı gösterdik
+@SpringBootTest(classes = Main.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class SeleniumUITest {
 
     @LocalServerPort
@@ -30,7 +32,7 @@ public class SeleniumUITest {
     @BeforeEach
     public void setUp() {
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--headless");
+        // options.addArguments("--headless"); // Headless modu kapalı (Chrome'u görmek için)
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
@@ -49,7 +51,6 @@ public class SeleniumUITest {
         if (driver != null) {
             driver.quit();
         }
-
     }
 
     private void loginAsAdmin() {
