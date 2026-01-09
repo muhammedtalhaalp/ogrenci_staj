@@ -37,7 +37,7 @@ public class SeleniumUITest {
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
         //deneme
-        //deneme
+
         try {
             driver = new ChromeDriver(options);
             // 10 saniyelik bekleme süresi tanımla
