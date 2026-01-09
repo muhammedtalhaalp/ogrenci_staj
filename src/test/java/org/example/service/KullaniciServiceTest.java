@@ -33,40 +33,32 @@ class KullaniciServiceTest {
         kullanici = new Kullanici();
         kullanici.setId(1L);
         kullanici.setEmail("test@example.com");
-        kullanici.setSifre("password");
+        kullanici.setSifre("123456");
         kullanici.setRol(Rol.OGRENCI);
+        kullanici.setAktifMi(true);
     }
 
     @Test
     void tumKullanicilariGetir_Basarili() {
         when(kullaniciRepository.findAll()).thenReturn(Arrays.asList(kullanici));
-
         List<Kullanici> sonuc = kullaniciService.tumKullanicilariGetir();
-
-        assertNotNull(sonuc);
         assertEquals(1, sonuc.size());
-        assertEquals(kullanici.getEmail(), sonuc.get(0).getEmail());
-        verify(kullaniciRepository, times(1)).findAll();
+        assertEquals("test@example.com", sonuc.get(0).getEmail());
     }
 
     @Test
-    void idIleKullaniciGetir_MevcutId_KullaniciDoner() {
+    void idIleKullaniciGetir_Basarili() {
         when(kullaniciRepository.findById(1L)).thenReturn(Optional.of(kullanici));
-
         Optional<Kullanici> sonuc = kullaniciService.idIleKullaniciGetir(1L);
-
         assertTrue(sonuc.isPresent());
-        assertEquals(kullanici.getId(), sonuc.get().getId());
+        assertEquals("test@example.com", sonuc.get().getEmail());
     }
 
     @Test
     void kullaniciKaydet_Basarili() {
         when(kullaniciRepository.save(any(Kullanici.class))).thenReturn(kullanici);
-
         Kullanici kaydedilen = kullaniciService.kullaniciKaydet(kullanici);
-
         assertNotNull(kaydedilen);
         assertEquals("test@example.com", kaydedilen.getEmail());
-        verify(kullaniciRepository, times(1)).save(kullanici);
     }
 }

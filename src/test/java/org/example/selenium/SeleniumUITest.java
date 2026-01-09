@@ -29,18 +29,14 @@ public class SeleniumUITest {
 
     @BeforeEach
     public void setUp() {
-        // System.setProperty("webdriver.chrome.driver", "C:/path/to/chromedriver.exe");
-
         ChromeOptions options = new ChromeOptions();
-        //options.addArguments("--headless");
+        options.addArguments("--headless");
         options.addArguments("--no-sandbox");
         options.addArguments("--disable-dev-shm-usage");
         options.addArguments("--remote-allow-origins=*");
-        //deneme
 
         try {
             driver = new ChromeDriver(options);
-            // 10 saniyelik bekleme süresi tanımla
             wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         } catch (Exception e) {
             System.err.println("ChromeDriver başlatılamadı! " + e.getMessage());
@@ -55,7 +51,6 @@ public class SeleniumUITest {
         }
     }
 
-    // Yardımcı metod: Giriş yap
     private void loginAsAdmin() {
         driver.get("http://localhost:" + port + "/index.html");
         
@@ -64,18 +59,15 @@ public class SeleniumUITest {
         
         driver.findElement(By.id("loginButton")).click();
         
-        // Giriş sonrası dashboard'un görünmesini bekle
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("dashboard")));
     }
 
-    // 1. Senaryo: Sayfa Başlığı Kontrolü
     @Test
     public void testPageTitle() {
         driver.get("http://localhost:" + port + "/index.html");
         assertEquals("Staj Portalı Giriş", driver.getTitle());
     }
 
-    // 2. Senaryo: Başarılı Giriş
     @Test
     public void testSuccessfulLogin() {
         driver.get("http://localhost:" + port + "/index.html");
@@ -85,14 +77,12 @@ public class SeleniumUITest {
 
         driver.findElement(By.id("loginButton")).click();
 
-        // Mesajın güncellenmesini bekle (Text boş olmamalı)
         WebElement message = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("message")));
         wait.until(ExpectedConditions.textToBePresentInElement(message, "Giriş Başarılı!"));
         
         assertEquals("Giriş Başarılı!", message.getText());
     }
 
-    // 3. Senaryo: Hatalı Giriş
     @Test
     public void testFailedLogin() {
         driver.get("http://localhost:" + port + "/index.html");
@@ -108,7 +98,6 @@ public class SeleniumUITest {
         assertEquals("Hatalı Giriş!", message.getText());
     }
 
-    // 4. Senaryo: Dashboard Görünürlüğü
     @Test
     public void testDashboardVisibility() {
         loginAsAdmin();
@@ -116,7 +105,6 @@ public class SeleniumUITest {
         assertTrue(dashboard.isDisplayed(), "Giriş sonrası dashboard görünmeli");
     }
 
-    // 5. Senaryo: Çıkış Yapma
     @Test
     public void testLogout() {
         loginAsAdmin();
@@ -128,7 +116,6 @@ public class SeleniumUITest {
         assertTrue(loginSection.isDisplayed(), "Çıkış sonrası giriş ekranı görünmeli");
     }
 
-    // 6. Senaryo: Footer Metni Kontrolü
     @Test
     public void testFooterText() {
         driver.get("http://localhost:" + port + "/index.html");
@@ -136,7 +123,6 @@ public class SeleniumUITest {
         assertTrue(footer.getText().contains("2024 Öğrenci Staj Portalı"));
     }
 
-    // 7. Senaryo: Menü Öğeleri Kontrolü
     @Test
     public void testMenuNavigation() {
         loginAsAdmin();
@@ -146,18 +132,15 @@ public class SeleniumUITest {
         assertTrue(menuBasvurular.isDisplayed());
     }
 
-    // 8. Senaryo: İlan Listesi Kontrolü
     @Test
     public void testIlanListesi() {
         loginAsAdmin();
-        // Liste elemanlarının yüklenmesini bekle
         wait.until(ExpectedConditions.numberOfElementsToBeMoreThan(By.cssSelector("#ilan-listesi li"), 0));
         
         List<WebElement> ilanlar = driver.findElements(By.cssSelector("#ilan-listesi li"));
         assertTrue(ilanlar.size() >= 2, "En az 2 ilan listelenmeli");
     }
 
-    // 9. Senaryo: İlan Ekleme Formu Açma
     @Test
     public void testIlanEkleButonu() {
         loginAsAdmin();
@@ -169,7 +152,6 @@ public class SeleniumUITest {
         assertTrue(form.isDisplayed(), "Butona basınca form açılmalı");
     }
 
-    // 10. Senaryo: Boş Giriş Denemesi
     @Test
     public void testEmptyLogin() {
         driver.get("http://localhost:" + port + "/index.html");
